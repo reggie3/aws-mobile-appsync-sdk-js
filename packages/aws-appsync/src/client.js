@@ -1,5 +1,5 @@
 /*!
- * Copyright 2017-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2017-2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  * Licensed under the Amazon Software License (the "License"). You may not use this file except in compliance with the License. A copy of
  * the License is located at
  *     http://aws.amazon.com/asl/
@@ -13,7 +13,7 @@ import { ApolloLink, FetchResult } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
 import { getMainDefinition, getOperationDefinition, variablesInOperation } from 'apollo-utilities';
 
-import OfflineCache from './cache/index';
+import { default as OfflineCache } from './cache/index';
 import { OfflineLink, AuthLink, NonTerminatingHttpLink, SubscriptionHandshakeLink, ComplexObjectLink } from './link';
 import { createStore } from './store';
 
@@ -31,7 +31,7 @@ class AWSAppSyncClient extends ApolloClient {
      * @param {string} url
      * @param {ApolloClientOptions<InMemoryCache>} options
      */
-    constructor({ url, region, auth, conflictResolver, complexObjectsCredentials, disableOffline = false }, options) {
+    constructor({ url, region, auth, conflictResolver, complexObjectsCredentials, disableOffline = false, cacheConfig = {} }, options) {
         if (!url || !region || !auth) {
             throw new Error(
                 'In order to initialize AWSAppSyncClient, you must specify url, region and auth properties on the config object.'
@@ -51,7 +51,9 @@ class AWSAppSyncClient extends ApolloClient {
             },
             conflictResolver,
         );
-        const cache = disableOffline ? new InMemoryCache() : new OfflineCache(store);
+        const cache = disableOffline ?
+            (options && options.cache) || new InMemoryCache() :
+            new OfflineCache(store, cacheConfig);
 
         const passthrough = (op, forward) => (forward ? forward(op) : Observable.of());
         let link = ApolloLink.from([

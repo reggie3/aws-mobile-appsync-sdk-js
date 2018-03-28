@@ -7,11 +7,13 @@
  * KIND, express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 import { Cache } from 'apollo-cache';
-import { InMemoryCache, ApolloReducerConfig, NormalizedCache } from 'apollo-cache-inmemory';
+import { InMemoryCache, ApolloReducerConfig, NormalizedCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
 import { Store, Action } from 'redux';
 
 export const NORMALIZED_CACHE_KEY = 'appsync';
 export const WRITE_ACTION = 'AAS_WRITE';
+
+export { defaultDataIdFromObject };
 
 export default class MyCache extends InMemoryCache {
 
