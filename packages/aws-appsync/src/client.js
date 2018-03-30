@@ -111,7 +111,7 @@ class AWSAppSyncClient extends ApolloClient {
 
         const newOptions = {
             ...otherOptions,
-            optimisticResponse: data,
+            optimisticResponse: doIt ? null : data,
             update,
             ...(doIt ? { refetchQueries } : {}),
             context,
