@@ -1,6 +1,6 @@
 {
   "name": "aws-appsync-react-custom-link",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "lib/index.js",
   "license": "SEE LICENSE IN LICENSE",
   "description": "AWS Mobile AppSync SDK for JavaScript - React and React Native components",
@@ -30,5 +30,8 @@
   },
   "react-native": {
     "./lib/rehydrated": "./lib/rehydrated-rn"
-  }
+  },
+  "files": [
+    "lib/"
+  ]
 }
